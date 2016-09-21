@@ -1,0 +1,112 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Higher or Lower</title>
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap-theme.min.css">
+    <!-- <link rel="stylesheet" href="css/main.css"> -->
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" /> <!-- To stop pound signs showing up like weird characters -->
+</head>
+
+<body>
+
+
+  <div class = "container-fluid">
+    <div class = "row">
+      <div class = "col-md-12">
+        <h1>Guess how much rich people pay for these!</h1>
+      </div>
+    </div>
+
+    <div class = "row">
+      <div class = "col-md-6">
+        <img id = 'pd1img' src='' alt= "Image1" style="width:200px;height:200px;">
+
+        <h3 id = 'product1Designer'>Designer</h3>
+
+        <p id = 'short1'>Short desc</p>
+        <p id = 'long1'>Long desc</p>
+
+
+      </div>
+
+      <div class = "col-md-6">
+        <img id = 'pd2img' src='' alt= "Image2" style="width:200px;height:200px;">
+        <h3 id= 'product2Designer'>Designer</h3>
+
+        <p id = 'short2'>Short desc</p>
+        <p id = 'long2'>Long desc</p>
+
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+
+  	var offset = 2;
+
+    //Get some random pids first
+  	fetch('http://lad-api.net-a-porter.com/NAP/GB/60/'+offset+'/pids?visibility=visible').then (
+  		function(pidsResponse) {
+        pidsResponse.json().then(function(pidData) {
+          console.log(pidData);
+          var numID =  _getRandomNumber(0, 59);
+          var numID2 = _getRandomNumber(0, 59);
+
+
+          //Check that 2 items are different
+          while (numID == numID2) {
+            numID =  _getRandomNumber(0, 59);
+            numID2 = _getRandomNumber(0, 59);
+          }
+
+          //Product id
+          var pid1 = pidData.pids[numID];
+          var pid2 = pidData.pids[numID2];
+
+          //Get the information for the pids
+          _getInfo(pid1, 1);
+          _getInfo(pid2, 2);
+
+
+        });
+
+  		}
+
+  	)
+
+    //Randomise number
+    function _getRandomNumber(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+
+    //Get data
+    function _getInfo(item, number) {
+        fetch('http://lad-api.net-a-porter.com/NAP/GB/en/detail/'+item).then (
+          function(pResponse) {
+              pResponse.json().then(function(pdData) {
+                console.log(pdData);
+
+                document.getElementById('product'+number+'Designer').innerHTML = pdData.brand.name;
+                document.getElementById('short'+number).innerHTML = pdData.name;
+                document.getElementById('long'+number).innerHTML = pdData.longDescription;
+                var imageURL = 'http://cache.net-a-porter.com/images/products/'+item+'/'+item+'_in_dl.jpg';
+                document.getElementById('pd'+number+'img').setAttribute('src',imageURL);
+
+
+              })
+
+          }
+
+        )
+
+    }
+
+  </script>
+</body>
+</html>
