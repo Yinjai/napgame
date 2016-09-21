@@ -29,6 +29,7 @@
 
         <p id = 'short1'>Short desc</p>
         <p id = 'long1'>Long desc</p>
+        <button id = "b1">Button1</button>
 
 
       </div>
@@ -40,6 +41,7 @@
         <p id = 'short2'>Short desc</p>
         <p id = 'long2'>Long desc</p>
 
+        <button id = "b1">Button2</button>
 
       </div>
     </div>
@@ -79,6 +81,13 @@
   		}
 
   	)
+    document.getElementById("b1").onclick = function() {_buttonClick(1)};
+    //Button function
+    function _buttonClick(number) {
+      document.getElementById('product'+number+'Designer').style.color = "red";
+
+    }
+
 
     //Randomise number
     function _getRandomNumber(min, max) {
