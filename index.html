@@ -51,7 +51,9 @@
   <script>
 
   	var offset = 2;
-
+    var priceG = 0;
+    var price1 = 0;
+    var price2 = 0;
     //Get some random pids first
   	fetch('http://lad-api.net-a-porter.com/NAP/GB/60/'+offset+'/pids?visibility=visible').then (
   		function(pidsResponse) {
@@ -65,6 +67,7 @@
           while (numID == numID2) {
             numID =  _getRandomNumber(0, 59);
             numID2 = _getRandomNumber(0, 59);
+            console.log('duplicate');
           }
 
           //Product id
@@ -73,7 +76,11 @@
 
           //Get the information for the pids
           _getInfo(pid1, 1);
+          price1 = _getPrice();
+          console.log(price1);
           _getInfo(pid2, 2);
+          price2 = _getPrice();
+          console.log(price2);
 
 
         });
@@ -81,10 +88,10 @@
   		}
 
   	)
-    document.getElementById("b1").onclick = function() {_buttonClick(1)};
+    document.getElementById("b1").onclick = function() {_buttonClick()};
     //Button function
-    function _buttonClick(number) {
-      document.getElementById('product'+number+'Designer').style.color = "red";
+    function _buttonClick() {
+      window.alert(price1 +' '+price2);
 
     }
 
@@ -107,13 +114,22 @@
                 var imageURL = 'http://cache.net-a-porter.com/images/products/'+item+'/'+item+'_in_dl.jpg';
                 document.getElementById('pd'+number+'img').setAttribute('src',imageURL);
 
+                _setPrice(pdData.price.amount);
 
               })
 
           }
 
         )
+    }
 
+    function _setPrice(price) {
+      priceG = price;
+
+    }
+
+    function _getPrice() {
+      return priceG;
     }
 
   </script>
